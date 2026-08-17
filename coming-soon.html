@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FIFAW - Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #ece3ce;
+        --paper-soft: #e3d8be;
+        --ink: #1c2b45;
+        --ink-soft: #5b5a46;
+        --pitch: #2f6b41;
+        --red: #b93327;
+        --line: rgba(28, 43, 69, 0.16);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Source Serif 4", Georgia, serif;
+        line-height: 1.6;
+        position: relative;
+        overflow-x: hidden;
+      }
+      .grain {
+        position: fixed;
+        inset: 0;
+        background-image: radial-gradient(
+          circle,
+          rgba(28, 43, 69, 0.55) 1px,
+          transparent 1px
+        );
+        background-size: 3px 3px;
+        opacity: 0.06;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .page {
+        position: relative;
+        z-index: 2;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 4rem;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Masthead */
+      .masthead {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      .crest {
+        width: 60px;
+        height: 64px;
+        margin: 0 auto 0.75rem;
+        background: var(--ink);
+        color: var(--paper);
+        clip-path: polygon(
+          50% 0%,
+          100% 15%,
+          100% 55%,
+          50% 100%,
+          0% 55%,
+          0% 15%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Anton", sans-serif;
+        font-size: 1.15rem;
+        letter-spacing: 0.02em;
+      }
+      .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--ink-soft);
+        margin: 0;
+      }
+
+      /* Hero */
+      .hero {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .wordmark {
+        font-family: "Anton", sans-serif;
+        font-size: clamp(2.4rem, 9vw, 4.4rem);
+        letter-spacing: 0.03em;
+        margin: 0 0 1rem;
+      }
+      .flap-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.3rem;
+        perspective: 500px;
+        margin-bottom: 1.5rem;
+      }
+      .tile {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: var(--ink);
+        color: var(--paper);
+        font-family: "Anton", sans-serif;
+        font-size: clamp(1.3rem, 5.4vw, 2.4rem);
+        width: 1.05em;
+        height: 1.3em;
+        border-radius: 4px;
+        box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.28);
+        transform-origin: bottom;
+        animation: flapIn 0.5s ease both;
+        animation-delay: calc(var(--i) * 70ms);
+      }
+      .tile::after {
+        content: "";
+        position: absolute;
+        left: 3px;
+        right: 3px;
+        top: 50%;
+        height: 1.5px;
+        background: rgba(0, 0, 0, 0.35);
+      }
+      .tile.space {
+        background: transparent;
+        box-shadow: none;
+        width: 0.55em;
+      }
+      @keyframes flapIn {
+        0% {
+          transform: rotateX(-95deg);
+          opacity: 0;
+        }
+        60% {
+          transform: rotateX(12deg);
+          opacity: 1;
+        }
+        100% {
+          transform: rotateX(0deg);
+        }
+      }
+      .subhead {
+        max-width: 480px;
+        margin: 0 auto;
+        color: var(--ink);
+        font-size: 1.08rem;
+      }
+
+      /* Preview card */
+      .preview-card {
+        position: relative;
+        background: var(--paper-soft);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 1.75rem 1.75rem 1.5rem;
+        max-width: 560px;
+        margin: 0 auto 3rem;
+        box-shadow:
+          0 1px 0 var(--line),
+          0 16px 28px -20px rgba(28, 43, 69, 0.4);
+      }
+      .stamp {
+        position: absolute;
+        top: -0.8rem;
+        right: 1.2rem;
+        transform: rotate(-7deg);
+        border: 2px solid var(--red);
+        color: var(--red);
+        background: rgba(185, 51, 39, 0.07);
+        font-family: "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        font-size: 0.62rem;
+        letter-spacing: 0.07em;
+        padding: 0.3rem 0.55rem;
+        border-radius: 4px;
+        line-height: 1.3;
+      }
+      .preview-title {
+        font-family: "Anton", sans-serif;
+        font-weight: normal;
+        letter-spacing: 0.02em;
+        font-size: 1.3rem;
+        margin: 0.25rem 0 1rem;
+      }
+      .preview-title span {
+        color: var(--ink-soft);
+        font-size: 0.85rem;
+        font-family: "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .stat-rows {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .stat-rows li {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        padding: 0.65rem 0;
+        border-bottom: 1px dashed var(--line);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+      .stat-rows li:last-child {
+        border-bottom: none;
+      }
+      .names em {
+        font-style: normal;
+        color: var(--ink-soft);
+        margin: 0 0.35em;
+        font-size: 0.85em;
+      }
+      .record {
+        color: var(--ink-soft);
+        white-space: nowrap;
+      }
+      .preview-foot {
+        margin: 1rem 0 0;
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+      }
+
+      /* Signup */
+      .signup {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .signup h2 {
+        font-family: "Anton", sans-serif;
+        font-weight: normal;
+        letter-spacing: 0.02em;
+        font-size: 1.4rem;
+        margin: 0 0 1.1rem;
+      }
+      .signup-form {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        max-width: 440px;
+        margin: 0 auto;
+      }
+      .signup-form input {
+        flex: 1 1 220px;
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        font-family: "Source Serif 4", serif;
+        font-size: 1rem;
+        color: var(--ink);
+      }
+      .signup-form input:focus-visible {
+        outline: 2px solid var(--pitch);
+        outline-offset: 2px;
+      }
+      .signup-form button {
+        padding: 0.85rem 1.3rem;
+        border: none;
+        border-radius: 8px;
+        background: var(--red);
+        color: var(--paper);
+        font-family: "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          background 0.15s ease;
+      }
+      .signup-form button:hover {
+        background: #9c2b21;
+        transform: translateY(-1px);
+      }
+      .signup-form button:focus-visible {
+        outline: 2px solid var(--pitch);
+        outline-offset: 2px;
+      }
+      .fine-print {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.02em;
+        color: var(--ink-soft);
+        margin-top: 0.8rem;
+      }
+
+      .site-footer {
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.03em;
+        color: var(--ink-soft);
+      }
+
+      @media (max-width: 420px) {
+        .signup-form {
+          flex-direction: column;
+        }
+        .signup-form button {
+          width: 100%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .tile {
+          animation: none !important;
+          opacity: 1;
+          transform: none;
+        }
+        .signup-form button {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <main class="page">
+      <header class="masthead">
+        <!-- <div class="crest" aria-hidden="true">FW</div>
+      <p class="eyebrow">Local Tournament Stats</p> -->
+      </header>
+
+      <section class="hero">
+        <h1 class="wordmark">FIFAW</h1>
+        <div class="flap-row" role="img" aria-label="Coming soon">
+          <span class="tile" style="--i: 0">C</span>
+          <span class="tile" style="--i: 1">O</span>
+          <span class="tile" style="--i: 2">M</span>
+          <span class="tile" style="--i: 3">I</span>
+          <span class="tile" style="--i: 4">N</span>
+          <span class="tile" style="--i: 5">G</span>
+          <span class="tile space" aria-hidden="true"></span>
+          <span class="tile" style="--i: 6">S</span>
+          <span class="tile" style="--i: 7">O</span>
+          <span class="tile" style="--i: 8">O</span>
+          <span class="tile" style="--i: 9">N</span>
+        </div>
+        <p class="subhead">
+          Every five-a-side gets logged. Every rivalry gets ranked. No more
+          relying on memory (or ego) to settle who's actually the best.
+        </p>
+      </section>
+
+      <section class="preview-card" aria-labelledby="preview-title">
+        <div class="stamp">Locked · Live after<br />Matchday 1</div>
+        <h2 id="preview-title" class="preview-title">
+          Head-to-Head <span>· Preview</span>
+        </h2>
+        <ul class="stat-rows">
+          <li>
+            <span class="names">Player A <em>vs</em> Player B</span>
+            <span class="record">W– D– L–</span>
+          </li>
+          <li>
+            <span class="names">Player C <em>vs</em> Player D</span>
+            <span class="record">W– D– L–</span>
+          </li>
+        </ul>
+        <p class="preview-foot">
+          Squad size: 4 (and counting). Reigning champion: nobody yet - that's
+          the whole point.
+        </p>
+      </section>
+
+      <section class="signup">
+        <h2>Get the final whistle when we go live</h2>
+        <form id="signup-form" class="signup-form">
+          <label class="sr-only" for="email">Email address</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@yourclub.com"
+            required
+          />
+          <button type="submit">Join the squad list</button>
+        </form>
+        <p class="fine-print" id="form-msg">
+          No spam, just kickoff notifications.
+        </p>
+      </section>
+
+      <footer class="site-footer">
+        <p>fifaw.xyz - built by the squad, for the squad. Est. 2026.</p>
+      </footer>
+    </main>
+
+    <script>
+      const form = document.getElementById("signup-form");
+      const msg = document.getElementById("form-msg");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const btn = form.querySelector("button");
+        msg.textContent = "You're on the list. \uD83D\uDC4A";
+        btn.disabled = true;
+        btn.textContent = "Added";
+        form.querySelector("input").disabled = true;
+      });
+    </script>
+  </body>
+</html>
